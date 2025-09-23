@@ -7,24 +7,60 @@ import static anjos.api_jwt.models.enums.statics.VALID_ROLES;
 @Component
 public class JwtValidation {
 
+    // ---------- NAME ----------
     public boolean isValidName(String name) {
-        return name != null || name.chars().noneMatch(Character::isDigit) || name.length() > 256;
+        return getNameErrorMessage(name) == null;
     }
 
+    public String getNameErrorMessage(String name) {
+        if (name == null) {
+            return "Name não pode ser nulo";
+        }
+        if (name.chars().anyMatch(Character::isDigit)) {
+            return "Name não pode conter dígitos";
+        }
+        if (name.length() > 256) {
+            return "Name não pode ter mais de 256 caracteres";
+        }
+        return null; // válido
+    }
+
+    // ---------- ROLE ----------
     public boolean isValidRole(String role) {
-        return role != null && VALID_ROLES.contains(role);
+        return getRoleErrorMessage(role) == null;
     }
 
-    boolean isValidateSeed(String seed) {
+    public String getRoleErrorMessage(String role) {
+        if (role == null) {
+            return "Role não pode ser nulo";
+        }
+        if (!VALID_ROLES.contains(role)) {
+            return "Invalid role: " + role;
+        }
+        return null;
+    }
+
+    // ---------- SEED ----------
+    public boolean isValidateSeed(String seed) {
+        return getSeedErrorMessage(seed) == null;
+    }
+
+    public String getSeedErrorMessage(String seed) {
+        if (seed == null) {
+            return "Seed não pode ser nulo";
+        }
         try {
             int seedInt = Integer.parseInt(seed);
-            return isPrime(seedInt);
+            if (!isPrime(seedInt)) {
+                return "Seed deve ser um número primo";
+            }
+            return null;
         } catch (NumberFormatException e) {
-            return false;
+            return "Seed deve ser um número válido";
         }
     }
 
-    // Método para verificar se um número é primo
+    // ---------- AUX ----------
     private static boolean isPrime(int number) {
         if (number <= 1) {
             return false;

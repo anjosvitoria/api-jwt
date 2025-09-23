@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class jwtResponse {
 
-    private boolean validPassword;
+    private boolean validJwt;
 
     private String message;
 }
