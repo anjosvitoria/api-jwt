@@ -31,7 +31,6 @@ public class JwtValidationService {
             String seed = decodedJwt.getClaim(statics.SEED).asString();
             String name = decodedJwt.getClaim(statics.NAME).asString();
 
-
             if (claims.size() != 3) {
                 return new jwtResponse(false, " foi encontrado mais de 3 claims.");
             }
